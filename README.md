@@ -1,1 +1,1 @@
-# Searchdit
+# Search Reddit
