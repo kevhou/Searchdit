@@ -36,6 +36,19 @@ module.exports = function(grunt) {
       }
     },
 
+    processhtml: {
+      options: {
+        data: {
+          message: 'Hello world!'
+        }
+      },
+      dist: {
+        files: {
+        '<%= paths.dist %>/index.html': ['<%= paths.assets %>/views/index.html']
+        }
+      }
+    },
+
     bump: {
       options: {
         files: ['package.json'],
@@ -119,9 +132,9 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,
-          cwd: '<%= paths.assets %>/views',
-          src: '*.html',
-          dest: '<%= paths.dist %>'
+          // cwd: '<%= paths.dist %>',
+          src: '<%= paths.dist %>/*.html',
+          // dest: '<%= paths.dist %>'
         }]
       }
     },
@@ -183,6 +196,7 @@ module.exports = function(grunt) {
     'cssmin',
     'uglify',
     'copy:dist',
+    'processhtml:dist',
     'htmlmin',
   ]);
 

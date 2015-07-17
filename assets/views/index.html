@@ -11,9 +11,11 @@
         <div id="content"></div>
     
         <script src="assets/scripts/bundle.js"></script>
-        <script>document.write('<script src="http://'
-        + location.host.split(':')[0]
-        + ':35729/livereload.js"></'
-        + 'script>')</script>
+        <!-- build:remove -->
+            <script>document.write('<script src="http://'
+            + location.host.split(':')[0]
+            + ':35729/livereload.js"></'
+            + 'script>')</script>
+        <!-- /build -->
     </body>
 </html>
