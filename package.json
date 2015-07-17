@@ -13,10 +13,13 @@
     "jquery": "^2.1.4",
     "jquery-ui": "^1.10.5",
     "jquery-ui-touch-punch": "^0.2.3",
+    "livereload-js": "^2.2.2",
     "moment": "^2.10.3",
     "path": "^0.11.14",
     "q": "^1.4.1",
     "react": "^0.13.3",
+    "react-infinite-scroll": "^0.1.5",
+    "react-router": "^0.13.3",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

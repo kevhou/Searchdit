@@ -15,6 +15,12 @@ module.exports = function(grunt) {
       options: {
         livereload: true
       },
+      js: {
+        files: ['<%= paths.assets %>/scripts/*.js'],
+        options: {
+          livereload: true
+        }
+      },
       sass: {
         files: '<%= paths.assets %>/styles/**/**/*.scss',
         tasks: ['sass:app']
