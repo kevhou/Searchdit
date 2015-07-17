@@ -10,4 +10,3 @@ coverage
 build/Release
 node_modules
 .tmp
-dist
