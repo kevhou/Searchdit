@@ -13,57 +13,56 @@ var RedditAPI = require('./RedditAPI.js');
 
 var Search = React.createClass({
   mixins: [Router.Navigation],
+  mixins: [Router.State],
 
   getInitialState: function () {
     return {
       posts: [],
       next: null,
-      subreddit: null,
+      subreddit: this.props.params.subreddit,
     };
   },
-  handleSubmit: function (e) {
-    e.preventDefault();
-    var subreddit;
-
-    subreddit = React.findDOMNode(this.refs.searchTerm).value.trim();
-
-    RedditAPI.getSubReddit(subreddit).then(function(data){
-      if(this.isMounted()){
-        this.setState({posts: data.data.children,
-        next: data.data.after});
-      }
-    }.bind(this));
-
-    this.transitionTo('search', {subreddit: subreddit});
+  componentDidMount: function(){
+    // this.setState({subreddit: this.props.params.subreddit});
+    // $('.test').val(this.props.params.subreddit);
+    // React.findDOMNode(this.refs.searchTerm).value(this.props.params.subreddit);
   },
-  handleShowMore: function(){
-    RedditAPI.getNext(this.state.next).then(function(data){
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({subreddit: nextProps.params.subreddit});
+    // console.log(nextProps);
+    this.search(nextProps.params.subreddit);
+  },
+  search: function(sub) {
+    RedditAPI.getSearch(sub).then(function(data){
       if(this.isMounted()){
-        var appendPosts = this.state.posts.concat(data.data.children);
-        this.setState({posts: appendPosts,
-        next: data.data.after});
+        this.setState({
+          posts: data.data.children,
+          next: data.data.after,
+        });
       }
     }.bind(this));
   },
   handleChange: function(event) {
     this.setState({subreddit: event.target.value.substr(0, 140)});
+    // this.props.onChange(event.target.value);
+  },
+  handleSubmit: function() {
+    // this.context.router.transitionTo('search', {subreddit: this.state.subreddit});
+    this.context.router.transitionTo('/' + encodeURIComponent(this.state.subreddit));
+    // this.setState({subreddit: this.state.subreddit});
   },
   componentWillMount: function(){
-    var subreddit = this.props.params.subreddit;
-    this.setState({subreddit: subreddit});
-
-    RedditAPI.getSubReddit(subreddit).then(function(data){
-      if(this.isMounted()){
-        this.setState({posts: data.data.children,
-        next: data.data.after});
-      }
-    }.bind(this));
+    this.search(this.state.subreddit);
   },
   render: function() {
+    // console.log(this.getParams().subreddit);
+
+    var subreddit = decodeURIComponent(this.state.subreddit);
+
     return (
       <div>
         <form className="commentForm" onSubmit={this.handleSubmit}>
-          <input type="text" value={this.state.subreddit} onChange={this.handleChange} ref="searchTerm" />
+          <input className="test" value={subreddit} onChange={this.handleChange} type="text" ref="searchTerm" />
           <input type="submit" value="Search" />
         </form>
 
@@ -80,7 +79,7 @@ var Search = React.createClass({
 var routes = (
   <Route handler={App}>
     <Route path="/" handler={Search}/>
-    <Route name="search" path="/r/:subreddit" handler={Search}/>
+    <Route name="search" path="/:subreddit*" handler={Search}/>
   </Route>
 );
 

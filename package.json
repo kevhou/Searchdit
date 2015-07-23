@@ -19,10 +19,12 @@
     "q": "^1.4.1",
     "react": "^0.13.3",
     "react-infinite-scroll": "^0.1.5",
+    "react-mini-router": "^1.1.6",
     "react-router": "^0.13.3",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "babelify": "^6.1.3",
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.8.0",
     "grunt-bump": "^0.3.1",

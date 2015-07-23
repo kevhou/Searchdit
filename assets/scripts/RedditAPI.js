@@ -34,7 +34,17 @@ var RedditAPI = {
 	getSubReddit: function(text) {
 		var options = {};
 
-		var endPoint = RedditAPI.REDDIT_ENDPOINT + "/r/" + text + ".json?limit=25";
+		var endPoint = RedditAPI.REDDIT_ENDPOINT + text + ".json?limit=25";
+
+		this.CURRENT_ENDPOINT = endPoint;
+
+
+		return RedditAPI.get(endPoint, options);
+	},
+	getSearch: function(text) {
+		var options = {};
+
+		var endPoint = RedditAPI.REDDIT_ENDPOINT + "/search.json?q=" + text;
 
 		this.CURRENT_ENDPOINT = endPoint;
 
