@@ -1,9 +1,6 @@
 var React = require('react');
 window.$ = window.jQuery = require('jquery')
 require('bootstrap');
-var _ = require('underscore');
-window.LiveReloadOptions = { host: 'localhost' };
-require('livereload-js');
 var InfiniteScroll = require('react-infinite-scroll')(React);
 var Router = require('react-router');
 var Route = Router.Route;
@@ -19,21 +16,24 @@ var Search = React.createClass({
     return {
       posts: [],
       next: null,
-      subreddit: this.props.params.subreddit,
+      path: this.props.params.splat,
     };
   },
-  componentDidMount: function(){
-    // this.setState({subreddit: this.props.params.subreddit});
-    // $('.test').val(this.props.params.subreddit);
-    // React.findDOMNode(this.refs.searchTerm).value(this.props.params.subreddit);
-  },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({subreddit: nextProps.params.subreddit});
-    // console.log(nextProps);
-    this.search(nextProps.params.subreddit);
+  sub: function(sub) {
+    RedditAPI.getSub(sub).then(function(data){
+      if(this.isMounted()){
+        this.setState({
+          posts: data.data.children,
+          next: data.data.after,
+        });
+      }
+    }.bind(this)).fail(function(){
+      this.search(sub);
+    }.bind(this));
   },
   search: function(sub) {
-    RedditAPI.getSearch(sub).then(function(data){
+    RedditAPI.getSearch(sub)
+    .then(function(data){
       if(this.isMounted()){
         this.setState({
           posts: data.data.children,
@@ -42,27 +42,35 @@ var Search = React.createClass({
       }
     }.bind(this));
   },
+  handleShowMore: function(){
+    RedditAPI.getNext(this.state.next).then(function(data){
+      if(this.isMounted()){
+        var appendPosts = this.state.posts.concat(data.data.children);
+        this.setState({posts: appendPosts,
+        next: data.data.after});
+      }
+    }.bind(this));
+  },
+  componentDidMount: function(){
+    this.sub(this.state.path);
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({path: nextProps.params.splat});
+    this.sub(nextProps.params.splat);
+  },
   handleChange: function(event) {
-    this.setState({subreddit: event.target.value.substr(0, 140)});
-    // this.props.onChange(event.target.value);
+    this.setState({path: event.target.value.substr(0, 140)});
   },
   handleSubmit: function() {
-    // this.context.router.transitionTo('search', {subreddit: this.state.subreddit});
-    this.context.router.transitionTo('/' + encodeURIComponent(this.state.subreddit));
-    // this.setState({subreddit: this.state.subreddit});
-  },
-  componentWillMount: function(){
-    this.search(this.state.subreddit);
+    this.context.router.transitionTo('/q=' + this.state.path);
   },
   render: function() {
-    // console.log(this.getParams().subreddit);
-
-    var subreddit = decodeURIComponent(this.state.subreddit);
+    var path = this.state.path;
 
     return (
       <div>
         <form className="commentForm" onSubmit={this.handleSubmit}>
-          <input className="test" value={subreddit} onChange={this.handleChange} type="text" ref="searchTerm" />
+          <input className="test" value={path} onChange={this.handleChange} type="text" ref="searchTerm" />
           <input type="submit" value="Search" />
         </form>
 
@@ -76,17 +84,60 @@ var Search = React.createClass({
   }
 });
 
+var Home = React.createClass({
+  render: function() {
+    return(
+      <h1>HOME</h1>
+    )
+  }
+});
+
+var Test = React.createClass({
+  mixins: [ Router.State ],
+
+  render: function() {
+    console.log(this.context.router.getCurrentQuery());
+
+    return(
+      <h1>{this.props.params.splat}</h1>
+    )
+  }
+});
+
+var NotFound = React.createClass({
+  render: function() {
+    return(
+      <h1>NOT FOUND</h1>
+    )
+  }
+});
+
+var Redirect = React.createClass({
+  mixins: [Router.Navigation],
+
+  componentWillMount: function() {
+    this.context.router.transitionTo('/q=/r/' + this.props.params.sub);
+  },
+  render: function() {
+    return(
+      <h1>Redirecting...</h1>
+    )
+  }
+});
+
 var routes = (
   <Route handler={App}>
-    <Route path="/" handler={Search}/>
-    <Route name="search" path="/:subreddit*" handler={Search}/>
+    <Route path="/" handler={Home}/>
+    <Route path="/r/:sub" handler={Redirect}/>
+    <Route path="/q=*" handler={Search}/>
+    <Route path="*" handler={NotFound}/>
   </Route>
 );
 
 var App = React.createClass({
   displayName: "App",
 
-  render: function render() {
+  render: function () {
     return (
       <div>
         <RouteHandler/>

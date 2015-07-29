@@ -18,7 +18,7 @@ var RedditAPI = {
 			deferred.resolve(res);
 		})
 		.fail(function(err) {
-			deferred.resolve(err);
+			deferred.reject(err);
 		});
 
 		return deferred.promise;
@@ -31,20 +31,21 @@ var RedditAPI = {
 	},
 	getCurrentUser: function() {
 	},
-	getSubReddit: function(text) {
+	getSub: function(text) {
 		var options = {};
 
-		var endPoint = RedditAPI.REDDIT_ENDPOINT + text + ".json?limit=25";
+		// var path = decodeURIComponent(text);
+
+		var endPoint = RedditAPI.REDDIT_ENDPOINT + text + ".json?limit=25&jsonp=?";
 
 		this.CURRENT_ENDPOINT = endPoint;
-
 
 		return RedditAPI.get(endPoint, options);
 	},
 	getSearch: function(text) {
 		var options = {};
 
-		var endPoint = RedditAPI.REDDIT_ENDPOINT + "/search.json?q=" + text;
+		var endPoint = RedditAPI.REDDIT_ENDPOINT + "/search.json?q=" + text + "&jsonp=?";
 
 		this.CURRENT_ENDPOINT = endPoint;
 
@@ -55,8 +56,6 @@ var RedditAPI = {
 		var options = {};
 
 		var endPoint = this.CURRENT_ENDPOINT + "&after=" + next;
-
-		console.log(endPoint);
 
 		return RedditAPI.get(endPoint, options);
 	}
