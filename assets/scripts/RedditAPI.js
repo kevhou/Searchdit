@@ -52,6 +52,16 @@ var RedditAPI = {
 
 		return RedditAPI.get(endPoint, options);
 	},
+	getComment: function(id) {
+		var options = {};
+
+		var endPoint = RedditAPI.REDDIT_ENDPOINT + "/comments/" + id + ".json";
+
+		this.CURRENT_ENDPOINT = endPoint;
+
+
+		return RedditAPI.get(endPoint, options);
+	},
 	getNext: function(next) {
 		var options = {};
 

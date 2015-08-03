@@ -2,95 +2,57 @@ var React = require('react');
 window.$ = window.jQuery = require('jquery')
 require('bootstrap');
 var InfiniteScroll = require('react-infinite-scroll')(React);
+var Truncate = require('truncate');
+var Moment = require('moment');
 var Router = require('react-router');
 var Route = Router.Route;
+var NotFoundRoute = Router.NotFoundRoute;
 var Link = Router.Link;
 
 var RedditAPI = require('./RedditAPI.js');
+var Search = require('./search.jsx');
+var entities = require("entities");
 
-var Search = React.createClass({
+var Home = React.createClass({
   mixins: [Router.Navigation],
-  mixins: [Router.State],
 
   getInitialState: function () {
     return {
-      posts: [],
-      next: null,
-      path: this.props.params.splat,
+      search: null,
     };
   },
-  sub: function(sub) {
-    RedditAPI.getSub(sub).then(function(data){
-      if(this.isMounted()){
-        this.setState({
-          posts: data.data.children,
-          next: data.data.after,
-        });
-      }
-    }.bind(this)).fail(function(){
-      this.search(sub);
-    }.bind(this));
-  },
-  search: function(sub) {
-    RedditAPI.getSearch(sub)
-    .then(function(data){
-      if(this.isMounted()){
-        this.setState({
-          posts: data.data.children,
-          next: data.data.after,
-        });
-      }
-    }.bind(this));
-  },
-  handleShowMore: function(){
-    RedditAPI.getNext(this.state.next).then(function(data){
-      if(this.isMounted()){
-        var appendPosts = this.state.posts.concat(data.data.children);
-        this.setState({posts: appendPosts,
-        next: data.data.after});
-      }
-    }.bind(this));
-  },
-  componentDidMount: function(){
-    this.sub(this.state.path);
-  },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({path: nextProps.params.splat});
-    this.sub(nextProps.params.splat);
+  handleSubmit: function() {
+    this.context.router.transitionTo('/q=' + this.state.search);
+    // console.log(this.refs.search)
   },
   handleChange: function(event) {
-    this.setState({path: event.target.value.substr(0, 140)});
-  },
-  handleSubmit: function() {
-    this.context.router.transitionTo('/q=' + this.state.path);
+    this.setState({search: event.target.value.substr(0, 140)});
   },
   render: function() {
-    var path = this.state.path;
-
-    return (
-      <div>
-        <form className="commentForm" onSubmit={this.handleSubmit}>
-          <input className="test" value={path} onChange={this.handleChange} type="text" ref="searchTerm" />
-          <input type="submit" value="Search" />
-        </form>
-
-        {this.state.posts.map(function(item, i) {
-          return(<p key={i}>{item.data.title}</p>)
-        }.bind(this))}
-
-        { this.state.next ? <button className="btn btn-default" onClick={this.handleShowMore}>Show More</button> :null }
+    return(
+      <div className="container">
+        <h1>SEARCHDIT</h1>
+        <div className="row">
+          <form className="input-group" onSubmit={this.handleSubmit}>
+             <input value={this.state.search} onChange={this.handleChange} type="text" className="form-control"/>
+             <span className="input-group-btn">
+                  <button className="btn btn-default" type="submit">Search</button>
+             </span>
+          </form>
+        </div>
       </div>
     )
   }
 });
 
-var Home = React.createClass({
-  render: function() {
-    return(
-      <h1>HOME</h1>
-    )
-  }
-});
+
+// <div>
+//         <h1>SEARCHDIT</h1>
+//         <div onSubmit={this.handleSubmit}>
+//           <input value={this.state.search} onChange={this.handleChange} type="text"/>
+//           <input type="submit" value="Search" />
+//         </div>
+//       </div>
 
 var Test = React.createClass({
   mixins: [ Router.State ],
@@ -125,12 +87,93 @@ var Redirect = React.createClass({
   }
 });
 
+var Comments = React.createClass({
+  mixins: [Router.Navigation],
+
+  getInitialState: function () {
+    return {
+      post: null,
+      comments: [],
+      path: null,
+    };
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({path: nextProps.params.splat});
+  },
+  handleChange: function(event) {
+    this.setState({path: event.target.value.substr(0, 140)});
+  },
+  handleSubmit: function() {
+    this.context.router.transitionTo('/q=' + this.state.path);
+  },
+  componentDidMount: function(){
+    RedditAPI.getComment(this.props.params.id)
+    .then(function(data){
+      if(this.isMounted()){
+        this.setState({
+          post: data[0].data.children,
+          comments: data[1].data.children,
+        });
+      }
+    }.bind(this));
+  },
+  getComments: function(comments){
+    return(
+      <div className="row">
+        {comments.map(function(item, i) {
+          var data = item.data;
+          // var text = Truncate(data.body, 300);
+          var text = entities.decodeHTML(data.body_html);
+          var author = data.author;
+          var date = Moment.unix(data.created_utc).fromNow();
+          var score = data.score + ' pts';
+
+          return(
+            <ul key={i}>
+              { item.kind == "more" ? <li><a> more </a></li> : (
+                <li>
+                <p dangerouslySetInnerHTML={{__html: text}} />
+                <h5>- {author} - {date} - {score}</h5>
+                </li>
+              )}
+              
+              { data.replies ? <ul> {this.getComments(data.replies.data.children)} </ul> : null }
+            </ul>
+          )
+        }.bind(this))}
+      </div>
+    )
+  },
+  //              { data.replies ? <ul> {this.getComments(data.replies.data.children)} </ul> : null }
+
+  render: function() {
+    console.log(this.state.comments[0])
+
+    return(
+      <div className="container">
+        <div className="row">
+          <div className="input-group">
+             <input value={this.state.path} onChange={this.handleChange} type="text" className="form-control"/>
+             <span className="input-group-btn">
+                  <button className="btn btn-default" type="button" onClick={this.handleSubmit}>Search</button>
+             </span>
+          </div>
+        </div>
+
+        {this.getComments(this.state.comments)}
+      </div>
+    )
+  }
+});
+
 var routes = (
   <Route handler={App}>
     <Route path="/" handler={Home}/>
     <Route path="/r/:sub" handler={Redirect}/>
     <Route path="/q=*" handler={Search}/>
-    <Route path="*" handler={NotFound}/>
+    <Route path="/comments=:id" handler={Comments}/>
+
+    <NotFoundRoute handler={NotFound} />
   </Route>
 );
 
