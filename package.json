@@ -1,0 +1,48 @@
+{
+  "name": "Searchdit",
+  "description": "Search Reddit",
+  "version": "0.3.0",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "dependencies": {
+    "body-parser": "^1.13.1",
+    "bootstrap": "^3.3.5",
+    "express": "^4.13.0",
+    "http": "0.0.0",
+    "jquery": "^2.1.4",
+    "jquery-ui": "^1.10.5",
+    "jquery-ui-touch-punch": "^0.2.3",
+    "livereload-js": "^2.2.2",
+    "moment": "^2.10.3",
+    "path": "^0.11.14",
+    "q": "^1.4.1",
+    "react": "^0.13.3",
+    "react-infinite-scroll": "^0.1.5",
+    "react-mini-router": "^1.1.6",
+    "react-router": "^0.13.3",
+    "truncate": "^1.0.5",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "babelify": "^6.1.3",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.8.0",
+    "grunt-bump": "^0.3.1",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-connect": "^0.10.1",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-cssmin": "^0.12.2",
+    "grunt-contrib-htmlmin": "^0.4.0",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-conventional-changelog": "^1.2.1",
+    "grunt-githooks": "^0.3.1",
+    "grunt-processhtml": "^0.3.8",
+    "grunt-react": "^0.12.2",
+    "grunt-sass": "^0.18.1",
+    "grunt-spritesmith": "^4.5.2",
+    "load-grunt-tasks": "^3.1.0"
+  }
+}
