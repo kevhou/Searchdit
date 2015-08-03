@@ -4,13 +4,11 @@ var Moment = require('moment');
 var Truncate = require('truncate');
 var Router = require('react-router');
 var Route = Router.Route;
-var Link = Router.Link;
 
 var RedditAPI = require('./RedditAPI.js');
 
 var Search = React.createClass({
   mixins: [Router.Navigation],
-  mixins: [Router.State],
 
   getInitialState: function () {
     return {
@@ -72,12 +70,12 @@ var Search = React.createClass({
     return (
       <div className="container">
         <div className="row">
-          <form className="input-group" onSubmit={this.handleSubmit}>
+          <div className="input-group">
              <input value={this.state.path} onChange={this.handleChange} type="text" className="form-control"/>
              <span className="input-group-btn">
-                  <button className="btn btn-default" type="submit">Search</button>
+                  <button className="btn btn-default" type="button" onClick={this.handleSubmit}>Search</button>
              </span>
-          </form>
+          </div>
         </div>
 
         <div className="row">
