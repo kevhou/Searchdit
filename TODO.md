@@ -1,5 +1,6 @@
 ##TODO
 - ~~use `selftext_html` to display listing text~~
+- show og post in comments page
 - sort subreddit/search/comments
 - tabs to sort listings
 - add keyboard control
