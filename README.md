@@ -1,12 +1,9 @@
-# Search Reddit
+# Searchdit
+Simple & minimalist way to search and read reddit.
 
-#TODO
-- ~~use `selftext_html` to display listing text~~
-- sort subreddit/search/comments
-- tabs to sort listings
-- add keyboard control
-- fix `error: EMFILE OSX` with `node-graceful-fs`
-- SSL support
-- Remove `#` in url
-- add google analytics
-- route `body_html` links to new tab (if possible)
+Browse reddit at work without getting caught!
+
+Look like a typical search engine.
+## Usage 
+    npm install
+    grunt server
