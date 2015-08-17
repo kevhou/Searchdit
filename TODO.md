@@ -12,3 +12,4 @@
 - route `body_html` links to new tab (if possible)
 - limit # of preview text `http://stackoverflow.com/questions/6983912/how-to-limit-inner-text-of-div-to-175-characters`
 - `NOT FOUND` page
+- `Redirect` and back button glitch
