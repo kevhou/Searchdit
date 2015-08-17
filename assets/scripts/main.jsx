@@ -18,50 +18,33 @@ var Home = React.createClass({
 
   getInitialState: function () {
     return {
-      search: null,
+      search: "",
     };
   },
   handleSubmit: function() {
-    this.context.router.transitionTo('/q=' + this.state.search);
-    // console.log(this.refs.search)
+    if($.trim(this.state.search)){
+      this.context.router.transitionTo('/q=' + this.state.search);
+    }
   },
   handleChange: function(event) {
     this.setState({search: event.target.value.substr(0, 140)});
   },
   render: function() {
     return(
-      <div className="container">
-        <h1>SEARCHDIT</h1>
+      <div className="container l-home">
         <div className="row">
-          <form className="input-group" onSubmit={this.handleSubmit}>
+          <img className="img-responsive home-logo" alt="Searchdit" src="assets/images/logo1.png"/>
+        </div>
+        
+        <div className="row">
+          <div className="input-group home-search-bar">
              <input value={this.state.search} onChange={this.handleChange} type="text" className="form-control"/>
              <span className="input-group-btn">
-                  <button className="btn btn-default" type="submit">Search</button>
+                  <button className="btn btn-default" onClick={this.handleSubmit}><i className="glyphicon glyphicon-search"></i></button>
              </span>
-          </form>
+          </div>
         </div>
       </div>
-    )
-  }
-});
-
-
-// <div>
-//         <h1>SEARCHDIT</h1>
-//         <div onSubmit={this.handleSubmit}>
-//           <input value={this.state.search} onChange={this.handleChange} type="text"/>
-//           <input type="submit" value="Search" />
-//         </div>
-//       </div>
-
-var Test = React.createClass({
-  mixins: [ Router.State ],
-
-  render: function() {
-    console.log(this.context.router.getCurrentQuery());
-
-    return(
-      <h1>{this.props.params.splat}</h1>
     )
   }
 });
