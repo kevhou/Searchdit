@@ -1,6 +1,22 @@
 body{
 	background: #FFF;
 	font-size: 14px;
+	// padding: 10px 15px 10px 15px;
+}
+
+.site-border{
+	position: fixed;
+	display: block;
+    height: 4px;
+    background: $primary-color;
+    z-index: 20;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+}
+
+#content{
+	padding-top: 20px;
 }
 //a,
 //a:hover{

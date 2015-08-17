@@ -1,4 +1,6 @@
 .m-searchbar{
+	padding-left: 12px;
+	padding-right: 12px;
 	.searchbar-logo{
 		height: 40px;
 		background-image: url("../images/logo1.png");
@@ -13,7 +15,8 @@
 @media only screen and (min-width : 480px) {
 	.m-searchbar{
 		max-width: 1100px;
-		padding-left: 155px;
+		padding-left: 171px;
+		padding-right: 16px;
 		.searchbar-logo{
 			height: 34px;
 			background-image: url("../images/logo1.png");
@@ -21,7 +24,7 @@
 			background-size: 140px 34px;
 			width: 140px;
 			position: absolute;
-			left: 10px;
+			left: 16px;
 			margin: 0px;
 		}
 	}

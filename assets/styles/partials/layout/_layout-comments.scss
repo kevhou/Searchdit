@@ -1,0 +1,27 @@
+.l-comments{
+	.comments-post{
+		margin-bottom: 15px;
+	}
+	.comments-bar{
+		// background-color: red;
+		// height: 60px;
+		margin-bottom: 15px;
+	}
+	.comments-body{
+		padding-left: 15px;
+		padding-right: 6px;
+	}
+	.comments-post{
+		padding-left: 6px;
+		padding-right: 6px;
+	}
+
+	@media (min-width: 768px) {
+		.comments-post{
+			padding-left: 161px;
+		}
+		.comments-body{
+			padding-left: 171px;
+		}
+	}
+}
