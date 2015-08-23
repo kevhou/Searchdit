@@ -13,21 +13,12 @@ var Comments = React.createClass({
     return {
       post: null,
       comments: [],
-      path: null,
+      path: this.props.params.id,
+      search: null,
     };
   },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({path: nextProps.params.splat});
-  },
-  handleChange: function(event) {
-    this.setState({path: event.target.value.substr(0, 140)});
-  },
-  handleSubmit: function() {
-    this.context.router.transitionTo('/q=' + this.state.path);
-  },
-  componentDidMount: function(){
-    RedditAPI.getComment(this.props.params.id)
-    .then(function(data){
+  comments: function(sub) {
+    RedditAPI.getComment(sub).then(function(data){
       if(this.isMounted()){
         this.setState({
           post: data[0].data.children,
@@ -35,6 +26,19 @@ var Comments = React.createClass({
         });
       }
     }.bind(this));
+  },
+  handleChange: function(event) {
+    this.setState({search: event.target.value.substr(0, 140)});
+  },
+  handleSubmit: function() {
+    this.context.router.transitionTo('/q=' + this.state.search);
+  },
+  componentWillMount: function(){
+    this.comments(this.state.path);
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({path: nextProps.params.id});
+    this.comments(nextProps.params.id);
   },
   getComments: function(comments){
     return(
@@ -66,7 +70,6 @@ var Comments = React.createClass({
   },
   getPost: function(){
     var data, title, titleLink, subreddit, date, score, comments, text, nsfw, subredditLink, numComments;
-
     
       data = this.state.post[0].data;
       title = entities.decodeHTML(data.title);
@@ -78,7 +81,6 @@ var Comments = React.createClass({
       
       if(data.selftext){
         text = entities.decodeHTML(data.selftext_html);
-        titleLink = commentsLink;
       }else{
         text = data.url;
         titleLink = data.url;
@@ -108,7 +110,7 @@ var Comments = React.createClass({
               <span className="searchbar-logo">Searchdit</span>
             </a>
             <div className="input-group">
-              <input className="form-control " value={this.state.path} onChange={this.handleChange} type="text"/>
+              <input className="form-control " value={this.state.search} onChange={this.handleChange} type="text"/>
               <div className="input-group-btn">
                 <button className="btn btn-default" onClick={this.handleSubmit}><i className="glyphicon glyphicon-search"></i></button>
               </div>
@@ -116,9 +118,7 @@ var Comments = React.createClass({
           </div>
         </div>
 
-        
         { this.state.post ? <div className="comments-post">{this.getPost()}</div> :null }
-        
 
         <div className="comments-body">
           {this.getComments(this.state.comments)}

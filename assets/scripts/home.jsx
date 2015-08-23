@@ -28,7 +28,7 @@ var Home = React.createClass({
           <div className="input-group home-search-bar">
              <input value={this.state.search} onChange={this.handleChange} type="text" className="form-control"/>
              <span className="input-group-btn">
-                  <button className="btn btn-default" onClick={this.handleSubmit}><i className="glyphicon glyphicon-search"></i></button>
+                  <button className="btn" onClick={this.handleSubmit}><i className="glyphicon glyphicon-search"></i></button>
              </span>
           </div>
         </div>

@@ -9,6 +9,12 @@
 		margin: auto;
 		max-width: 90%;
 	}
+	.btn{
+		background-color: $primary-color;
+	}
+	i{
+		color: white;
+	}
   	@media (min-width: 768px) {
 		.home-logo{
 			margin: 130px auto 35px auto;

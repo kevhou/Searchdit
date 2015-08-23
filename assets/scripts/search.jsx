@@ -75,9 +75,9 @@ var Search = React.createClass({
               <span className="searchbar-logo">Searchdit</span>
             </a>
             <div className="input-group">
-              <input className="form-control " value={this.state.path} onChange={this.handleChange} type="text"/>
+              <input className="form-control" value={this.state.path} onChange={this.handleChange} type="text"/>
               <div className="input-group-btn">
-                <button className="btn btn-default" onClick={this.handleSubmit}><i className="glyphicon glyphicon-search"></i></button>
+                <button className="btn" onClick={this.handleSubmit}><i className="glyphicon glyphicon-search"></i></button>
               </div>
             </div>
           </div>
@@ -98,7 +98,7 @@ var Search = React.createClass({
                 text = Truncate(data.selftext, 150);
                 titleLink = commentsLink;
               }else{
-                text = data.url;
+                text = Truncate(data.url, 150);
                 titleLink = data.url;
               }
               

@@ -1,18 +1,13 @@
 .m-comments{
-	// padding-bottom: 10px;
 	border-left: 1px solid $primary-color;
-	> .comments-list{
-			list-style: none;
-			padding-left: 20px;
-			// border-left: 2px solid $primary-color;
-			margin-bottom: 20px;
-			max-width: 945px;
+	.comments-list{
+		list-style: none;
+		padding-left: 15px;
+		margin-bottom: 20px;
+		max-width: 945px;
 	}
 	.comments-text{
-		// color: $primary-color;
 		font-size: 14px;
-		// padding-bottom: 30px;
-
 	}
 	.comments-author{
 		color: $primary-color;
@@ -26,8 +21,5 @@
 		font-size: 14px;
 		color: #666;
 		word-wrap: break-word;
-	}
-	.comments-item{
-		// max-width: 800px;
 	}
 }

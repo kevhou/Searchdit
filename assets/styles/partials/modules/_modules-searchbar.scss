@@ -10,6 +10,12 @@
 		display: block;
 		margin: 10px auto 15px auto;
 	}
+	.btn{
+		background-color: $primary-color;
+	}
+	i{
+		color: white;
+	}
 }
 
 @media only screen and (min-width : 480px) {
@@ -21,8 +27,8 @@
 			height: 34px;
 			background-image: url("../images/logo1.png");
 			font-size: 0px;
-			background-size: 140px 34px;
-			width: 140px;
+			background-size: 135px 34px;
+			width: 135px;
 			position: absolute;
 			left: 16px;
 			margin: 0px;
