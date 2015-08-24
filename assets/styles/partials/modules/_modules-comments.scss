@@ -1,0 +1,25 @@
+.m-comments{
+	border-left: 1px solid $primary-color;
+	.comments-list{
+		list-style: none;
+		padding-left: 15px;
+		margin-bottom: 20px;
+		max-width: 945px;
+	}
+	.comments-text{
+		font-size: 14px;
+	}
+	.comments-author{
+		color: $primary-color;
+		font-size: 15px;
+	}
+	.comments-info{
+		font-size: 13px;
+		color: #666;
+	}
+	.comments-text{
+		font-size: 14px;
+		color: #666;
+		word-wrap: break-word;
+	}
+}

@@ -1,0 +1,28 @@
+.l-home{
+  	position: relative;
+  	z-index: 0;
+  	.home-logo{
+		margin: 130px auto 35px auto;
+		max-width: 80%;
+	}
+	.home-search-bar{
+		margin: auto;
+		max-width: 90%;
+	}
+	.btn{
+		background-color: $primary-color;
+	}
+	i{
+		color: white;
+	}
+  	@media (min-width: 768px) {
+		.home-logo{
+			margin: 130px auto 35px auto;
+			width: 450px;
+		}
+		.home-search-bar{
+			margin: auto;
+			max-width: 750px;
+		}
+	}
+}

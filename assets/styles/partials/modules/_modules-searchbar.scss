@@ -1,0 +1,37 @@
+.m-searchbar{
+	padding-left: 12px;
+	padding-right: 12px;
+	.searchbar-logo{
+		height: 40px;
+		background-image: url("../images/logo1.png");
+		font-size: 0px;
+		background-size: 150px 40px;
+		width: 150px;
+		display: block;
+		margin: 10px auto 15px auto;
+	}
+	.btn{
+		background-color: $primary-color;
+	}
+	i{
+		color: white;
+	}
+}
+
+@media only screen and (min-width : 480px) {
+	.m-searchbar{
+		max-width: 1100px;
+		padding-left: 171px;
+		padding-right: 16px;
+		.searchbar-logo{
+			height: 34px;
+			background-image: url("../images/logo1.png");
+			font-size: 0px;
+			background-size: 135px 34px;
+			width: 135px;
+			position: absolute;
+			left: 16px;
+			margin: 0px;
+		}
+	}
+}

@@ -1,0 +1,15 @@
+.l-result{
+	// padding: 10px;
+	.result-bar{
+		// background-color: red;
+		// height: 60px;
+		margin-bottom: 15px;
+	}
+	.result-body{
+		padding-left: 6px;
+		padding-right: 6px;
+		@media (min-width: 768px) {
+			padding-left: 161px;
+		}
+	}
+}
