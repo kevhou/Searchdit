@@ -11,7 +11,7 @@ var Home = React.createClass({
   },
   handleSubmit: function() {
     if($.trim(this.state.search)){
-      this.context.router.transitionTo('/q=' + this.state.search);
+      this.context.router.transitionTo('/sort=hot&q=' + this.state.search);
     }
   },
   handleChange: function(event) {

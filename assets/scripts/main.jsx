@@ -20,7 +20,7 @@ var Redirect = React.createClass({
   mixins: [Router.Navigation],
 
   componentWillMount: function() {
-    this.context.router.transitionTo('/q=/r/' + this.props.params.sub);
+    this.context.router.transitionTo('/sort=hot&q=/r/' + this.props.params.sub);
   },
   render: function() {
     return(
@@ -31,10 +31,10 @@ var Redirect = React.createClass({
 
 var routes = (
   <Route handler={App}>
-    <Route path="/" handler={Home}/>
+    <Route name="home" path="/" handler={Home}/>
     <Route path="/r/:sub" handler={Redirect}/>
-    <Route path="/q=*" handler={Search}/>
-    <Route path="/comments=:id" handler={Comments}/>
+    <Route name="search" path="/sort=:sort&q=*" handler={Search}/>
+    <Route name="comments" path="/comments=:id" handler={Comments}/>
 
     <NotFoundRoute handler={NotFound} />
   </Route>

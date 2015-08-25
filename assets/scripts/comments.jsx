@@ -2,6 +2,7 @@ var React = require('react');
 var Truncate = require('truncate');
 var Moment = require('moment');
 var Router = require('react-router');
+var Link = Router.Link;
 
 var RedditAPI = require('./RedditAPI.js');
 var entities = require("entities");
@@ -93,7 +94,7 @@ var Comments = React.createClass({
     return(
       <div className="m-post">
         <div className="post-block">
-          <div><a className="post-title" href={titleLink}>{title}</a> <a className="post-subreddit" href={subredditLink}>{subreddit}</a></div>
+          <div><a className="post-title" href={titleLink}>{title}</a> <Link className="post-subreddit" to="search" params={{sort: "hot", splat: subreddit}}>{subreddit}</Link></div>
           <div className="post-text" dangerouslySetInnerHTML={{__html: text}} />
           <div className="post-footer">{nsfw} {date} - {score} - {numComments}</div>
         </div>

@@ -1,0 +1,21 @@
+.m-sort{
+	a{
+		margin: 10px;
+		font-size: 14px;
+		color: $primary-color;
+		text-decoration: none;
+		&:hover{
+			color: $secondary-color;
+		}
+		&.selected{
+			color: $secondary-color;
+			font-weight: bold;
+			border-bottom: 1px solid $secondary-color;
+			padding-bottom: 3px;
+		}
+
+		@media (min-width: 768px) {
+			font-size: 15px;
+		}
+	}
+}

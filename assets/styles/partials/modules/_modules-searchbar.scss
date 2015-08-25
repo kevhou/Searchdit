@@ -12,6 +12,9 @@
 	}
 	.btn{
 		background-color: $primary-color;
+		&:hover{
+			background-color: $secondary-color;
+		}
 	}
 	i{
 		color: white;
