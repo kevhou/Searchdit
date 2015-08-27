@@ -27,7 +27,7 @@ module.exports = function(grunt) {
       },
       browserify: {
         files: [
-          '<%= paths.assets %>/scripts/*.jsx'
+          '<%= paths.assets %>/scripts/*.{js,jsx}'
         ],
         tasks: ['browserify:app'],
         options: {

@@ -34,7 +34,7 @@ var routes = (
     <Route name="home" path="/" handler={Home}/>
     <Route path="/r/:sub" handler={Redirect}/>
     <Route name="search" path="/sort=:sort&q=*" handler={Search}/>
-    <Route name="comments" path="/comments=:id" handler={Comments}/>
+    <Route name="comments" path="/comments=*" handler={Comments}/>
 
     <NotFoundRoute handler={NotFound} />
   </Route>

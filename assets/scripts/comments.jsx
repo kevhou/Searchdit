@@ -14,7 +14,7 @@ var Comments = React.createClass({
     return {
       post: null,
       comments: [],
-      path: this.props.params.id,
+      path: this.props.params.splat,
       search: null,
     };
   },
@@ -38,8 +38,8 @@ var Comments = React.createClass({
     this.comments(this.state.path);
   },
   componentWillReceiveProps: function(nextProps) {
-    this.setState({path: nextProps.params.id});
-    this.comments(nextProps.params.id);
+    this.setState({path: nextProps.params.splat});
+    this.comments(nextProps.params.splat);
   },
   getComments: function(comments){
     return(
@@ -53,7 +53,7 @@ var Comments = React.createClass({
 
           return(
             <ul className="comments-list" key={i}>
-              { item.kind == "more" ? <li><a> more </a></li> : (
+              { item.kind == "more" ? <li><Link to="comments" params={{splat: this.props.params.splat + "/" + item.data.id}}> more </Link></li> : (
                 <li className="comments-item">
                   <div className="comments-author">
                     {author} <span className="comments-info"> {date} - {score}</span>

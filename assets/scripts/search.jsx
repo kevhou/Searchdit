@@ -23,10 +23,20 @@ var Search = React.createClass({
   sub: function(sub) {
     RedditAPI.getSub(sub).then(function(data){
       if(this.isMounted()){
-        this.setState({
-          posts: data.data.children,
-          next: data.data.after,
-        });
+        if(data.data.children.length == 0){
+            this.setState({
+              posts: [{data: {title: "No posts found",
+                              subreddit: null,
+                              id: null,
+                              selftext: "there doesn't seem to be anything here"}}],
+              next: null,
+            });
+        }else{
+          this.setState({
+            posts: data.data.children,
+            next: data.data.after,
+          });
+        }
       }
     }.bind(this)).fail(function(){
       this.search(sub);
@@ -36,10 +46,20 @@ var Search = React.createClass({
     RedditAPI.getSearch(sub)
     .then(function(data){
       if(this.isMounted()){
-        this.setState({
-          posts: data.data.children,
-          next: data.data.after,
-        });
+        if(data.data.children.length == 0){
+          this.setState({
+            posts: [{data: {title: "No search results found",
+                            subreddit: null,
+                            id: null,
+                            selftext: "there doesn't seem to be anything here"}}],
+            next: null,
+          });
+        }else{
+          this.setState({
+            posts: data.data.children,
+            next: data.data.after,
+          });
+        }
       }
     }.bind(this));
   },
@@ -63,20 +83,20 @@ var Search = React.createClass({
   handleChange: function(event) {
     this.setState({path: event.target.value.substr(0, 140)});
   },
-  handleSubmit: function() {
+  handleSubmit: function(e) {
+    e.preventDefault();
+
     this.context.router.transitionTo('/sort=hot&q=' + this.state.path);
   },
   sortBy: function(sort) {
-    // this.context.router.transitionTo('/sort=hot&q=' + this.state.path);
     this.context.router.transitionTo('/sort='+ sort + '&q=' + this.state.path);
-    // console.log("test")
   },
   getComponent: function() {
       $(this.getDOMNode()).addClass("selected");
   },
   render: function() {
     var title, titleLink, subreddit, date, score, comments, text, nsfw;
-
+    console.log(this.state.posts)
     return (
       <div className="l-result">
 
@@ -85,12 +105,14 @@ var Search = React.createClass({
             <a href="#">
               <span className="searchbar-logo">Searchdit</span>
             </a>
-            <div className="input-group">
+
+            <form className="input-group" onSubmit={this.handleSubmit}>
               <input className="form-control" value={this.state.path} onChange={this.handleChange} type="text"/>
               <div className="input-group-btn">
-                <button className="btn" onClick={this.handleSubmit}><i className="glyphicon glyphicon-search"></i></button>
+                <button className="btn" type="submit"><i className="glyphicon glyphicon-search"></i></button>
               </div>
-            </div>
+            </form>
+
           </div>
         </div>
 
@@ -113,7 +135,11 @@ var Search = React.createClass({
               date = Moment.unix(data.created_utc).fromNow();
               score = data.score + ' pts';
               numComments = data.num_comments + ' comments';
-              commentsLink = '/#/comments=' + data.id;
+              if(data.id){
+                commentsLink = '/#/comments=' + data.id + "/" + item.data.title;
+              }else{
+                commentsLink = null;
+              }
 
               if(data.selftext){
                 text = Truncate(data.selftext, 150);
@@ -129,9 +155,9 @@ var Search = React.createClass({
 
               return(
                 <div className="post-block" key={i}>
-                  <div><a className="post-title" href={titleLink}>{title}</a> <Link className="post-subreddit" to="search" params={{sort: "hot", splat: subreddit}}>{subreddit}</Link></div>
+                  <div><a className="post-title" href={titleLink}>{title}</a> { data.subreddit ? <Link className="post-subreddit" to="search" params={{sort: "hot", splat: subreddit}}>{subreddit}</Link> : null}</div>
                   <div className="post-text">{text}</div>
-                  <div className="post-footer">{nsfw} {date} - {score} - <a href={commentsLink}>{numComments}</a></div>
+                  { data.id ? <div className="post-footer">{nsfw} {date} - {score} - <a href={commentsLink}>{numComments}</a> </div> : null}
                 </div>
               )
             }.bind(this))}

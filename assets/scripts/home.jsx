@@ -9,7 +9,9 @@ var Home = React.createClass({
       search: "",
     };
   },
-  handleSubmit: function() {
+  handleSubmit: function(e) {
+    e.preventDefault();
+
     if($.trim(this.state.search)){
       this.context.router.transitionTo('/sort=hot&q=' + this.state.search);
     }
@@ -25,12 +27,12 @@ var Home = React.createClass({
         </a>
         
         <div className="row">
-          <div className="input-group home-search-bar">
-             <input value={this.state.search} onChange={this.handleChange} type="text" className="form-control"/>
+          <form className="input-group home-search-bar" onSubmit={this.handleSubmit}>
+             <input className="form-control" value={this.state.search} onChange={this.handleChange} type="text" autoFocus={true}/>
              <span className="input-group-btn">
-                  <button className="btn" onClick={this.handleSubmit}><i className="glyphicon glyphicon-search"></i></button>
+                  <button className="btn" type="submit"><i className="glyphicon glyphicon-search"></i></button>
              </span>
-          </div>
+          </form>
         </div>
       </div>
     )

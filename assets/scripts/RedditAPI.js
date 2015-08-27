@@ -29,8 +29,6 @@ var RedditAPI = {
 
 		return RedditAPI.request(url, options);
 	},
-	getCurrentUser: function() {
-	},
 	getSub: function(text) {
 		var options = {};
 

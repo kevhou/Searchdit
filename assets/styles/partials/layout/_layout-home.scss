@@ -11,12 +11,20 @@
 	}
 	.btn{
 		background-color: $primary-color;
+		border-radius: 0px;
 		&:hover{
 			background-color: $secondary-color;
 		}
 	}
 	i{
 		color: white;
+	}
+	input{
+		border-radius: 0px;
+		&:focus{
+			border-color: $primary-color;
+			box-shadow: none;
+		}
 	}
   	@media (min-width: 768px) {
 		.home-logo{
