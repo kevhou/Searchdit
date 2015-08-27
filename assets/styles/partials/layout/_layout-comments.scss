@@ -1,6 +1,9 @@
 .l-comments{
 	.comments-post{
 		margin-bottom: 15px;
+		margin-top: 10px;
+		padding-left: 6px;
+		padding-right: 6px;
 	}
 	.comments-bar{
 		margin-bottom: 15px;
@@ -9,11 +12,13 @@
 		padding-left: 15px;
 		padding-right: 6px;
 	}
-	.comments-post{
+	.comments-sort{
 		padding-left: 6px;
 		padding-right: 6px;
+		@media (min-width: 768px) {
+			padding-left: 161px;
+		}
 	}
-
 	@media (min-width: 768px) {
 		.comments-post{
 			padding-left: 161px;

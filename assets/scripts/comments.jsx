@@ -15,11 +15,12 @@ var Comments = React.createClass({
       post: null,
       comments: [],
       path: this.props.params.splat,
+      sort: this.props.params.sort,
       search: null,
     };
   },
-  comments: function(sub) {
-    RedditAPI.getComment(sub).then(function(data){
+  comments: function(sub, sort) {
+    RedditAPI.getComment(sub, sort).then(function(data){
       if(this.isMounted()){
         this.setState({
           post: data[0].data.children,
@@ -31,15 +32,18 @@ var Comments = React.createClass({
   handleChange: function(event) {
     this.setState({search: event.target.value.substr(0, 140)});
   },
-  handleSubmit: function() {
-    this.context.router.transitionTo('/q=' + this.state.search);
+  handleSubmit: function(e) {
+    e.preventDefault();
+
+    this.context.router.transitionTo('/sort=hot&q=' + this.state.search);
   },
-  componentWillMount: function(){
-    this.comments(this.state.path);
+  componentDidMount: function(){
+    this.comments(this.state.path, this.state.sort);
   },
   componentWillReceiveProps: function(nextProps) {
-    this.setState({path: nextProps.params.splat});
-    this.comments(nextProps.params.splat);
+    this.setState({path: nextProps.params.splat,
+                   sort: nextProps.params.sort});
+    this.comments(nextProps.params.splat, nextProps.params.sort);
   },
   getComments: function(comments){
     return(
@@ -53,7 +57,7 @@ var Comments = React.createClass({
 
           return(
             <ul className="comments-list" key={i}>
-              { item.kind == "more" ? <li><Link to="comments" params={{splat: this.props.params.splat + "/" + item.data.id}}> more </Link></li> : (
+              { item.kind == "more" ? <li><Link to="comments" params={{sort: "best", splat: this.props.params.splat + "/" + item.data.id}}> more </Link></li> : (
                 <li className="comments-item">
                   <div className="comments-author">
                     {author} <span className="comments-info"> {date} - {score}</span>
@@ -110,17 +114,28 @@ var Comments = React.createClass({
             <a href="#">
               <span className="searchbar-logo">Searchdit</span>
             </a>
-            <div className="input-group">
+            <form className="input-group" onSubmit={this.handleSubmit}>
               <input className="form-control " value={this.state.search} onChange={this.handleChange} type="text"/>
               <div className="input-group-btn">
-                <button className="btn btn-default" onClick={this.handleSubmit}><i className="glyphicon glyphicon-search"></i></button>
+                <button className="btn btn-default" type="submit"><i className="glyphicon glyphicon-search"></i></button>
               </div>
-            </div>
+            </form>
+          </div>
+        </div>
+
+        <div className="comments-sort">
+          <div className="m-sort">
+              <Link activeClassName="selected" to="comments" params={{sort: "best", splat: this.props.params.splat}}>Best</Link>
+              <Link activeClassName="selected" to="comments" params={{sort: "top", splat: this.props.params.splat}}>Top</Link>
+              <Link activeClassName="selected" to="comments" params={{sort: "new", splat: this.props.params.splat}}>New</Link>
+              <Link activeClassName="selected" to="comments" params={{sort: "controversial", splat: this.props.params.splat}}>Controversial</Link>
+              <Link activeClassName="selected" to="comments" params={{sort: "old", splat: this.props.params.splat}}>Old</Link>
+              <Link activeClassName="selected" to="comments" params={{sort: "qa", splat: this.props.params.splat}}>Q&A</Link>
           </div>
         </div>
 
         { this.state.post ? <div className="comments-post">{this.getPost()}</div> :null }
-
+        
         <div className="comments-body">
           {this.getComments(this.state.comments)}
         </div>

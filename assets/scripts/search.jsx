@@ -18,10 +18,11 @@ var Search = React.createClass({
       next: null,
       path: this.props.params.splat,
       sort: this.props.params.sort,
+      type: null,
     };
   },
-  sub: function(sub) {
-    RedditAPI.getSub(sub).then(function(data){
+  sub: function(sub, sort) {
+    RedditAPI.getSub(sub, sort).then(function(data){
       if(this.isMounted()){
         if(data.data.children.length == 0){
             this.setState({
@@ -30,21 +31,22 @@ var Search = React.createClass({
                               id: null,
                               selftext: "there doesn't seem to be anything here"}}],
               next: null,
+              type: "sub"
             });
         }else{
           this.setState({
             posts: data.data.children,
             next: data.data.after,
+            type: "sub"
           });
         }
       }
     }.bind(this)).fail(function(){
-      this.search(sub);
+      this.search(sub, sort);
     }.bind(this));
   },
-  search: function(sub) {
-    RedditAPI.getSearch(sub)
-    .then(function(data){
+  search: function(sub, sort) {
+    RedditAPI.getSearch(sub, sort).then(function(data){
       if(this.isMounted()){
         if(data.data.children.length == 0){
           this.setState({
@@ -53,11 +55,13 @@ var Search = React.createClass({
                             id: null,
                             selftext: "there doesn't seem to be anything here"}}],
             next: null,
+            type: "search"
           });
         }else{
           this.setState({
             posts: data.data.children,
             next: data.data.after,
+            type: "search"
           });
         }
       }
@@ -67,18 +71,19 @@ var Search = React.createClass({
     RedditAPI.getNext(this.state.next).then(function(data){
       if(this.isMounted()){
         var appendPosts = this.state.posts.concat(data.data.children);
-        this.setState({posts: appendPosts,
-        next: data.data.after});
+        this.setState({
+          posts: appendPosts,
+          next: data.data.after});
       }
     }.bind(this));
   },
   componentDidMount: function(){
-    this.sub(this.state.path + '/' + this.state.sort);
+    this.sub(this.state.path, this.state.sort);
   },
   componentWillReceiveProps: function(nextProps) {
     this.setState({path: nextProps.params.splat,
                    sort: nextProps.params.sort});
-    this.sub(nextProps.params.splat + '/' + nextProps.params.sort);
+    this.sub(nextProps.params.splat, nextProps.params.sort);
   },
   handleChange: function(event) {
     this.setState({path: event.target.value.substr(0, 140)});
@@ -88,15 +93,12 @@ var Search = React.createClass({
 
     this.context.router.transitionTo('/sort=hot&q=' + this.state.path);
   },
-  sortBy: function(sort) {
-    this.context.router.transitionTo('/sort='+ sort + '&q=' + this.state.path);
-  },
   getComponent: function() {
       $(this.getDOMNode()).addClass("selected");
   },
   render: function() {
     var title, titleLink, subreddit, date, score, comments, text, nsfw;
-    console.log(this.state.posts)
+
     return (
       <div className="l-result">
 
@@ -120,9 +122,10 @@ var Search = React.createClass({
           <div className="m-sort">
               <Link activeClassName="selected" to="search" params={{sort: "hot", splat: this.props.params.splat}}>Hot</Link>
               <Link activeClassName="selected" to="search" params={{sort: "new", splat: this.props.params.splat}}>New</Link>
-              <Link activeClassName="selected" to="search" params={{sort: "rising", splat: this.props.params.splat}}>Rising</Link>
-              <Link activeClassName="selected" to="search" params={{sort: "controversial", splat: this.props.params.splat}}>Controversial</Link>
+              { this.state.type === "sub" ? <Link activeClassName="selected" to="search" params={{sort: "rising", splat: this.props.params.splat}}>Rising</Link> : null}
+              { this.state.type === "sub" ? <Link activeClassName="selected" to="search" params={{sort: "controversial", splat: this.props.params.splat}}>Controversial</Link> : null}
               <Link activeClassName="selected" to="search" params={{sort: "top", splat: this.props.params.splat}}>Top</Link>
+              { this.state.type === "search" ? <Link activeClassName="selected" to="search" params={{sort: "relevance", splat: this.props.params.splat}}>Relevance</Link> : null}
           </div>
         </div>
 
@@ -136,7 +139,7 @@ var Search = React.createClass({
               score = data.score + ' pts';
               numComments = data.num_comments + ' comments';
               if(data.id){
-                commentsLink = '/#/comments=' + data.id + "/" + item.data.title;
+                commentsLink = '/#/sort=best&comments=' + data.id + "/" + item.data.title;
               }else{
                 commentsLink = null;
               }

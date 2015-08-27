@@ -19,7 +19,7 @@ var routes = (
   <Route handler={App}>
     <Route name="home" path="/" handler={Home}/>
     <Route name="search" path="/sort=:sort&q=*" handler={Search}/>
-    <Route name="comments" path="/comments=*" handler={Comments}/>
+    <Route name="comments" path="/sort=:sort&comments=*" handler={Comments}/>
 
     <NotFoundRoute handler={NotFound} />
   </Route>

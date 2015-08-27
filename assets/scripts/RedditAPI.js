@@ -29,31 +29,35 @@ var RedditAPI = {
 
 		return RedditAPI.request(url, options);
 	},
-	getSub: function(text) {
+	getSub: function(text, sort) {
 		var options = {};
 
-		// var path = decodeURIComponent(text);
+		var search = text + "/" + sort;
 
-		var endPoint = RedditAPI.REDDIT_ENDPOINT + text + ".json?limit=25&jsonp=?";
+		var endPoint = RedditAPI.REDDIT_ENDPOINT + search + ".json?limit=25&jsonp=?";
 
 		this.CURRENT_ENDPOINT = endPoint;
 
 		return RedditAPI.get(endPoint, options);
 	},
-	getSearch: function(text) {
+	getSearch: function(text, sort) {
 		var options = {};
 
-		var endPoint = RedditAPI.REDDIT_ENDPOINT + "/search.json?q=" + text + "&jsonp=?";
+		var search = text + "&sort=" + sort;
+
+		var endPoint = RedditAPI.REDDIT_ENDPOINT + "/search.json?q=" + search + "&jsonp=?";
 
 		this.CURRENT_ENDPOINT = endPoint;
 
 
 		return RedditAPI.get(endPoint, options);
 	},
-	getComment: function(id) {
+	getComment: function(id, sort) {
 		var options = {};
 
-		var endPoint = RedditAPI.REDDIT_ENDPOINT + "/comments/" + id + ".json";
+		// var search = id + "/?sort=" + sort;
+
+		var endPoint = RedditAPI.REDDIT_ENDPOINT + "/comments/" + id + ".json?sort=" + sort;
 
 		this.CURRENT_ENDPOINT = endPoint;
 
