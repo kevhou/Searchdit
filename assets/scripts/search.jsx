@@ -139,7 +139,7 @@ var Search = React.createClass({
               score = data.score + ' pts';
               numComments = data.num_comments + ' comments';
               if(data.id){
-                commentsLink = '/#/sort=best&comments=' + data.id + "/" + item.data.title;
+                commentsLink = '/#/sort=best&comments=' + data.id;
               }else{
                 commentsLink = null;
               }
