@@ -15,24 +15,9 @@ var NotFound = require('./notfound.jsx');
 var Comments = require('./comments.jsx');
 var entities = require("entities");
 
-
-var Redirect = React.createClass({
-  mixins: [Router.Navigation],
-
-  componentWillMount: function() {
-    this.context.router.transitionTo('/sort=hot&q=/r/' + this.props.params.sub);
-  },
-  render: function() {
-    return(
-      <h1>Redirecting...</h1>
-    )
-  }
-});
-
 var routes = (
   <Route handler={App}>
     <Route name="home" path="/" handler={Home}/>
-    <Route path="/r/:sub" handler={Redirect}/>
     <Route name="search" path="/sort=:sort&q=*" handler={Search}/>
     <Route name="comments" path="/comments=*" handler={Comments}/>
 
