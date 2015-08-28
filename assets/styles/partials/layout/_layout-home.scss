@@ -1,8 +1,9 @@
 .l-home{
   	position: relative;
   	z-index: 0;
-  	.home-logo{
-		margin: 10% auto 35px auto;
+	.home-logo{
+		display: block;
+		margin: 15% auto 60px auto;
 		max-width: 80%;
 	}
 	.home-search-bar{
@@ -12,6 +13,7 @@
 	.btn{
 		background-color: $primary-color;
 		border-radius: 0px;
+		height: 34px;
 		&:hover{
 			background-color: $secondary-color;
 		}
@@ -28,8 +30,7 @@
 	}
   	@media (min-width: 768px) {
 		.home-logo{
-			// margin: 110px auto 35px auto;
-			width: 450px;
+			width: 500px;
 		}
 		.home-search-bar{
 			margin: auto;

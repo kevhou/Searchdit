@@ -3,6 +3,7 @@ var Truncate = require('truncate');
 var Moment = require('moment');
 var Router = require('react-router');
 var Link = Router.Link;
+var DocumentTitle = require("react-document-title");
 
 var RedditAPI = require('./RedditAPI.js');
 var entities = require("entities");
@@ -107,39 +108,42 @@ var Comments = React.createClass({
   },
   render: function() {
     return(
-      <div className="l-comments">
-
-        <div className="comments-bar">
-          <div className="m-searchbar">
-            <a href="#">
-              <span className="searchbar-logo">Searchdit</span>
-            </a>
-            <form className="input-group" onSubmit={this.handleSubmit}>
-              <input className="form-control " value={this.state.search} onChange={this.handleChange} type="text"/>
-              <div className="input-group-btn">
-                <button className="btn btn-default" type="submit"><i className="glyphicon glyphicon-search"></i></button>
+      <DocumentTitle title="Comment - Searchdit">
+        <div id="content">
+          <div className="l-comments">
+            <div className="comments-bar">
+              <div className="m-searchbar">
+                <a href="#">
+                  <span className="searchbar-logo">Searchdit</span>
+                </a>
+                <form className="input-group" onSubmit={this.handleSubmit}>
+                  <input className="form-control " value={this.state.search} onChange={this.handleChange} type="text"/>
+                  <div className="input-group-btn">
+                    <button className="btn btn-default" type="submit"><i className="glyphicon glyphicon-search"></i></button>
+                  </div>
+                </form>
               </div>
-            </form>
+            </div>
+
+            <div className="comments-sort">
+              <div className="m-sort">
+                  <Link activeClassName="selected" to="comments" params={{sort: "best", id: this.props.params.id}}>Best</Link>
+                  <Link activeClassName="selected" to="comments" params={{sort: "top", id: this.props.params.id}}>Top</Link>
+                  <Link activeClassName="selected" to="comments" params={{sort: "new", id: this.props.params.id}}>New</Link>
+                  <Link activeClassName="selected" to="comments" params={{sort: "controversial", id: this.props.params.id}}>Controversial</Link>
+                  <Link activeClassName="selected" to="comments" params={{sort: "old", id: this.props.params.id}}>Old</Link>
+                  <Link activeClassName="selected" to="comments" params={{sort: "qa", id: this.props.params.id}}>Q&A</Link>
+              </div>
+            </div>
+
+            { this.state.post ? <div className="comments-post">{this.getPost()}</div> :null }
+            
+            <div className="comments-body">
+              {this.getComments(this.state.comments)}
+            </div>
           </div>
         </div>
-
-        <div className="comments-sort">
-          <div className="m-sort">
-              <Link activeClassName="selected" to="comments" params={{sort: "best", id: this.props.params.id}}>Best</Link>
-              <Link activeClassName="selected" to="comments" params={{sort: "top", id: this.props.params.id}}>Top</Link>
-              <Link activeClassName="selected" to="comments" params={{sort: "new", id: this.props.params.id}}>New</Link>
-              <Link activeClassName="selected" to="comments" params={{sort: "controversial", id: this.props.params.id}}>Controversial</Link>
-              <Link activeClassName="selected" to="comments" params={{sort: "old", id: this.props.params.id}}>Old</Link>
-              <Link activeClassName="selected" to="comments" params={{sort: "qa", id: this.props.params.id}}>Q&A</Link>
-          </div>
-        </div>
-
-        { this.state.post ? <div className="comments-post">{this.getPost()}</div> :null }
-        
-        <div className="comments-body">
-          {this.getComments(this.state.comments)}
-        </div>
-      </div>
+      </DocumentTitle>
     )
   }
 });

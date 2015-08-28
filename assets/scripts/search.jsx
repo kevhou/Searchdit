@@ -6,6 +6,7 @@ var Router = require('react-router');
 var Route = Router.Route;
 var Link = Router.Link;
 var entities = require("entities");
+var DocumentTitle = require("react-document-title");
 
 var RedditAPI = require('./RedditAPI.js');
 
@@ -24,6 +25,9 @@ var Search = React.createClass({
   sub: function(sub, sort) {
     RedditAPI.getSub(sub, sort).then(function(data){
       if(this.isMounted()){
+        if(sub === "/r/random"){
+          this.context.router.transitionTo('/sort=hot&q=/r/' + data.data.children[0].data.subreddit);
+        }
         if(data.data.children.length == 0){
             this.setState({
               posts: [{data: {title: "No posts found",
@@ -100,75 +104,85 @@ var Search = React.createClass({
     var title, titleLink, subreddit, date, score, comments, text, nsfw;
 
     return (
-      <div className="l-result">
+      <DocumentTitle title={this.props.params.splat + "- Searchdit"}>
+        <div id="content">
+          <div className="l-result">
 
-        <div className="result-bar">
-          <div className="m-searchbar">
-            <a href="#">
-              <span className="searchbar-logo">Searchdit</span>
-            </a>
+            <div className="result-bar">
+              <div className="m-searchbar">
+                <a href="#">
+                  <span className="searchbar-logo">Searchdit</span>
+                </a>
 
-            <form className="input-group" onSubmit={this.handleSubmit}>
-              <input className="form-control" value={this.state.path} onChange={this.handleChange} type="text"/>
-              <div className="input-group-btn">
-                <button className="btn" type="submit"><i className="glyphicon glyphicon-search"></i></button>
+                <form className="input-group" onSubmit={this.handleSubmit}>
+                  <input className="form-control" value={this.state.path} onChange={this.handleChange} type="text"/>
+                  <div className="input-group-btn">
+                    <button className="btn" type="submit"><i className="glyphicon glyphicon-search"></i></button>
+                  </div>
+                </form>
+
               </div>
-            </form>
+            </div>
 
-          </div>
-        </div>
+            <div className="result-sort">
+              <div className="m-sort">
+                  <Link activeClassName="selected" to="search" params={{sort: "hot", splat: this.props.params.splat}}>Hot</Link>
+                  <Link activeClassName="selected" to="search" params={{sort: "new", splat: this.props.params.splat}}>New</Link>
+                  { this.state.type === "sub" ? <Link activeClassName="selected" to="search" params={{sort: "rising", splat: this.props.params.splat}}>Rising</Link> : null}
+                  { this.state.type === "sub" ? <Link activeClassName="selected" to="search" params={{sort: "controversial", splat: this.props.params.splat}}>Controversial</Link> : null}
+                  <Link activeClassName="selected" to="search" params={{sort: "top", splat: this.props.params.splat}}>Top</Link>
+                  { this.state.type === "search" ? <Link activeClassName="selected" to="search" params={{sort: "relevance", splat: this.props.params.splat}}>Relevance</Link> : null}
+              </div>
+            </div>
 
-        <div className="result-sort">
-          <div className="m-sort">
-              <Link activeClassName="selected" to="search" params={{sort: "hot", splat: this.props.params.splat}}>Hot</Link>
-              <Link activeClassName="selected" to="search" params={{sort: "new", splat: this.props.params.splat}}>New</Link>
-              { this.state.type === "sub" ? <Link activeClassName="selected" to="search" params={{sort: "rising", splat: this.props.params.splat}}>Rising</Link> : null}
-              { this.state.type === "sub" ? <Link activeClassName="selected" to="search" params={{sort: "controversial", splat: this.props.params.splat}}>Controversial</Link> : null}
-              <Link activeClassName="selected" to="search" params={{sort: "top", splat: this.props.params.splat}}>Top</Link>
-              { this.state.type === "search" ? <Link activeClassName="selected" to="search" params={{sort: "relevance", splat: this.props.params.splat}}>Relevance</Link> : null}
-          </div>
-        </div>
-
-        <div className="result-body">
-          <div className="m-post">
-            {this.state.posts.map(function(item, i) {
-              var data = item.data;
-              title = entities.decodeHTML(item.data.title);
-              subreddit = '/r/' + data.subreddit;
-              date = Moment.unix(data.created_utc).fromNow();
-              score = data.score + ' pts';
-              numComments = data.num_comments + ' comments';
-              if(data.id){
-                commentsLink = '/#/sort=best&comments=' + data.id;
-              }else{
-                commentsLink = null;
-              }
-
-              if(data.selftext){
-                text = Truncate(data.selftext, 150);
-                titleLink = commentsLink;
-              }else{
-                text = Truncate(data.url, 150);
-                titleLink = data.url;
-              }
+            <div className="result-body">
+              <div className="m-post">
               
-              if(data.over_18){
-                nsfw = "[NSFW]";
-              }
+                <InfiniteScroll
+                  loadMore={this.handleShowMore}
+                  hasMore={this.state.next}
+                  loader={<div className="loader">Loading ...</div>}>
 
-              return(
-                <div className="post-block" key={i}>
-                  <div><a className="post-title" href={titleLink}>{title}</a> { data.subreddit ? <Link className="post-subreddit" to="search" params={{sort: "hot", splat: subreddit}}>{subreddit}</Link> : null}</div>
-                  <div className="post-text">{text}</div>
-                  { data.id ? <div className="post-footer">{nsfw} {date} - {score} - <a href={commentsLink}>{numComments}</a> </div> : null}
-                </div>
-              )
-            }.bind(this))}
+                  {this.state.posts.map(function(item, i) {
+                    var data = item.data;
+                    title = entities.decodeHTML(item.data.title);
+                    subreddit = '/r/' + data.subreddit;
+                    date = Moment.unix(data.created_utc).fromNow();
+                    score = data.score + ' pts';
+                    numComments = data.num_comments + ' comments';
+                    if(data.id){
+                      commentsLink = '/#/sort=best&comments=' + data.id;
+                    }else{
+                      commentsLink = null;
+                    }
 
-            { this.state.next ? <button className="btn btn-default" onClick={this.handleShowMore}>Show More</button> :null }
+                    if(data.selftext){
+                      text = Truncate(data.selftext, 150);
+                      titleLink = commentsLink;
+                    }else{
+                      text = Truncate(data.url, 150);
+                      titleLink = data.url;
+                    }
+                    
+                    if(data.over_18){
+                      nsfw = "[NSFW]";
+                    }
+
+                    return(
+                      <div className="post-block" key={i}>
+                        <div><a className="post-title" href={titleLink}>{title}</a> { data.subreddit ? <Link className="post-subreddit" to="search" params={{sort: "hot", splat: subreddit}}>{subreddit}</Link> : null}</div>
+                        <div className="post-text">{text}</div>
+                        { data.id ? <div className="post-footer">{nsfw} {date} - {score} - <a href={commentsLink}>{numComments}</a> </div> : null}
+                      </div>
+                    )
+                  }.bind(this))}
+
+              </InfiniteScroll>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </DocumentTitle>
     )
   }
 });

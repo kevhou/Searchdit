@@ -1,5 +1,7 @@
 var React = require('react');
 var Router = require('react-router');
+var Link = Router.Link;
+var DocumentTitle = require("react-document-title");
 
 var Home = React.createClass({
   mixins: [Router.Navigation],
@@ -21,20 +23,28 @@ var Home = React.createClass({
   },
   render: function() {
     return(
-      <div className="container l-home">
-        <a className="row" href="#">
-          <img className="img-responsive home-logo" alt="Searchdit" src="assets/images/logo1.png"/>
-        </a>
-        
-        <div className="row">
-          <form className="input-group home-search-bar" onSubmit={this.handleSubmit}>
-             <input className="form-control" value={this.state.search} onChange={this.handleChange} type="text" autoFocus={true}/>
-             <span className="input-group-btn">
-                  <button className="btn" type="submit"><i className="glyphicon glyphicon-search"></i></button>
-             </span>
-          </form>
+      <DocumentTitle title="Searchdit">
+        <div id="content">
+          <div className="l-home">
+            <a className="home-logo" href="#">
+              <img className="img-responsive" alt="Searchdit" src="assets/images/logo1.png"/>
+            </a>
+            
+            <form className="input-group home-search-bar" onSubmit={this.handleSubmit}>
+               <input className="form-control" value={this.state.search} onChange={this.handleChange} type="text" autoFocus={true}/>
+               <span className="input-group-btn">
+                    <button className="btn" type="submit"><i className="glyphicon glyphicon-search"></i></button>
+               </span>
+            </form>
+          </div>
+
+          <div className="m-footer">
+            <Link to="help">Help</Link>
+            <Link to="about">About</Link>
+            <Link to="search" params={{sort: "hot", splat:"/r/random"}}>Random</Link>
+          </div>
         </div>
-      </div>
+      </DocumentTitle>
     )
   }
 });
