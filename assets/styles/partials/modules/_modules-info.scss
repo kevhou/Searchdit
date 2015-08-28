@@ -1,19 +1,15 @@
 .m-info{
-	position: absolute;
-  	background-color: #2D5B8E;
-  	height: 100%;
-  	width: 100%;
   	padding-top: 20px;
   	.info-logo{
   		display: block;
-  		margin: 10% auto 10px auto;
+  		margin: 12% auto 0px auto;
   		max-width: 80%;
 		@media (min-width: 768px) {
 			width: 500px;
 		}
   	}
   	.info-body{
-  		color: white;
+  		color: $secondary-color;
   		display: block;
   		margin: 0px auto 0px auto;
   		max-width: 80%;
@@ -27,7 +23,7 @@
 			font-size: 15px;
 			text-align: right;
 			a{
-				color: white;
+				color: $secondary-color;
 			}
 		}
   	}

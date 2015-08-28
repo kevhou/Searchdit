@@ -39,6 +39,7 @@ var Home = React.createClass({
           </div>
 
           <div className="m-footer">
+            <Link to="home">Home</Link>
             <Link to="help">Help</Link>
             <Link to="about">About</Link>
             <Link to="search" params={{sort: "hot", splat:"/r/random"}}>Random</Link>
