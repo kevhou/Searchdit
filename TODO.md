@@ -3,10 +3,7 @@
 - ~~show og post in comments page~~
 - ~~tabs to sort listings~~
 - ~~limit # of preview text `http://stackoverflow.com/questions/6983912/how-to-limit-inner-text-of-div-to-175-characters`~~
-- fix `error: EMFILE OSX` with `node-graceful-fs`
 - SSL support
 - ~~add google analytics~~
-- route `body_html` links to new tab (if possible)
-- `NOT FOUND` page
 - different color name in comments for author
-- add guide
+- ~~add guide~~
