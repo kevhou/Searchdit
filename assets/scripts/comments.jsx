@@ -15,9 +15,10 @@ var Comments = React.createClass({
     return {
       post: null,
       comments: [],
-      path: this.props.params.id,
+      path: this.props.params.splat,
       sort: this.props.params.sort,
       search: null,
+      title: null,
     };
   },
   comments: function(sub, sort) {
@@ -26,6 +27,7 @@ var Comments = React.createClass({
         this.setState({
           post: data[0].data.children,
           comments: data[1].data.children,
+          title: data[0].data.children[0].data.title
         });
       }
     }.bind(this));
@@ -42,9 +44,9 @@ var Comments = React.createClass({
     this.comments(this.state.path, this.state.sort);
   },
   componentWillReceiveProps: function(nextProps) {
-    this.setState({path: nextProps.params.id,
+    this.setState({path: nextProps.params.splat,
                    sort: nextProps.params.sort});
-    this.comments(nextProps.params.id, nextProps.params.sort);
+    this.comments(nextProps.params.splat, nextProps.params.sort);
   },
   getComments: function(comments){
     return(
@@ -58,7 +60,7 @@ var Comments = React.createClass({
 
           return(
             <ul className="comments-list" key={i}>
-              { item.kind == "more" ? <li><Link to="comments" params={{sort: "best", id: this.props.params.id + "/" + item.data.id}}> more </Link></li> : (
+              { item.kind == "more" ? <li><Link to="comments" params={{sort: "best", splat: this.state.path + '/' + this.state.title + "/" + item.data.id}}> more </Link></li> : (
                 <li className="comments-item">
                   <div className="comments-author">
                     {author} <span className="comments-info"> {date} - {score}</span>
@@ -127,12 +129,12 @@ var Comments = React.createClass({
 
             <div className="comments-sort">
               <div className="m-sort">
-                  <Link activeClassName="selected" to="comments" params={{sort: "best", id: this.props.params.id}}>Best</Link>
-                  <Link activeClassName="selected" to="comments" params={{sort: "top", id: this.props.params.id}}>Top</Link>
-                  <Link activeClassName="selected" to="comments" params={{sort: "new", id: this.props.params.id}}>New</Link>
-                  <Link activeClassName="selected" to="comments" params={{sort: "controversial", id: this.props.params.id}}>Controversial</Link>
-                  <Link activeClassName="selected" to="comments" params={{sort: "old", id: this.props.params.id}}>Old</Link>
-                  <Link activeClassName="selected" to="comments" params={{sort: "qa", id: this.props.params.id}}>Q&A</Link>
+                  <Link activeClassName="selected" to="comments" params={{sort: "best", splat: this.props.params.splat}}>Best</Link>
+                  <Link activeClassName="selected" to="comments" params={{sort: "top", splat: this.props.params.splat}}>Top</Link>
+                  <Link activeClassName="selected" to="comments" params={{sort: "new", splat: this.props.params.splat}}>New</Link>
+                  <Link activeClassName="selected" to="comments" params={{sort: "controversial", splat: this.props.params.splat}}>Controversial</Link>
+                  <Link activeClassName="selected" to="comments" params={{sort: "old", splat: this.props.params.splat}}>Old</Link>
+                  <Link activeClassName="selected" to="comments" params={{sort: "qa", splat: this.props.params.splat}}>Q&A</Link>
               </div>
             </div>
 

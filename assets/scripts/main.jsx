@@ -21,7 +21,7 @@ var routes = (
   <Route>
     <Route name="home" path="/" handler={Home}/>
     <Route name="search" path="/sort=:sort&q=*" handler={Search}/>
-    <Route name="comments" path="/sort=:sort&comments=:id" handler={Comments}/>
+    <Route name="comments" path="/sort=:sort&comments=*" handler={Comments}/>
     <Route name="help" path="/help" handler={Help}/>
     <Route name="about" path="/about" handler={About}/>
     <NotFoundRoute handler={Home} />

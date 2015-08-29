@@ -34,7 +34,7 @@ var RedditAPI = {
 
 		var search = text + "/" + sort;
 
-		var endPoint = RedditAPI.REDDIT_ENDPOINT + search + ".json?limit=25&jsonp=?";
+		var endPoint = RedditAPI.REDDIT_ENDPOINT + search + ".json?limit=10&jsonp=?";
 
 		this.CURRENT_ENDPOINT = endPoint;
 
@@ -45,7 +45,7 @@ var RedditAPI = {
 
 		var search = text + "&sort=" + sort;
 
-		var endPoint = RedditAPI.REDDIT_ENDPOINT + "/search.json?q=" + search + "&jsonp=?";
+		var endPoint = RedditAPI.REDDIT_ENDPOINT + "/search.json?limit=10&q=" + search + "&jsonp=?";
 
 		this.CURRENT_ENDPOINT = endPoint;
 

@@ -126,11 +126,11 @@ var Search = React.createClass({
 
             <div className="result-sort">
               <div className="m-sort">
-                  <Link activeClassName="selected" to="search" params={{sort: "hot", splat: this.props.params.splat}}>Hot</Link>
-                  <Link activeClassName="selected" to="search" params={{sort: "new", splat: this.props.params.splat}}>New</Link>
+                  { this.state.type ? <Link activeClassName="selected" to="search" params={{sort: "hot", splat: this.props.params.splat}}>Hot</Link> : null}
+                  { this.state.type ? <Link activeClassName="selected" to="search" params={{sort: "new", splat: this.props.params.splat}}>New</Link> : null}
                   { this.state.type === "sub" ? <Link activeClassName="selected" to="search" params={{sort: "rising", splat: this.props.params.splat}}>Rising</Link> : null}
                   { this.state.type === "sub" ? <Link activeClassName="selected" to="search" params={{sort: "controversial", splat: this.props.params.splat}}>Controversial</Link> : null}
-                  <Link activeClassName="selected" to="search" params={{sort: "top", splat: this.props.params.splat}}>Top</Link>
+                  { this.state.type ? <Link activeClassName="selected" to="search" params={{sort: "top", splat: this.props.params.splat}}>Top</Link> : null}
                   { this.state.type === "search" ? <Link activeClassName="selected" to="search" params={{sort: "relevance", splat: this.props.params.splat}}>Relevance</Link> : null}
               </div>
             </div>
