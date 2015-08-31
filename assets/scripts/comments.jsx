@@ -77,9 +77,10 @@ var Comments = React.createClass({
     )
   },
   getPost: function(){
-    var data, title, titleLink, subreddit, date, score, comments, text, nsfw, subredditLink, numComments;
+    var data, author, title, titleLink, subreddit, date, score, comments, text, nsfw, subredditLink, numComments;
     
       data = this.state.post[0].data;
+      author = data.author;
       title = entities.decodeHTML(data.title);
       subreddit = '/r/' + data.subreddit;
       subredditLink = '/#/q=' + subreddit;
@@ -103,7 +104,7 @@ var Comments = React.createClass({
         <div className="post-block">
           <div><a className="post-title" href={titleLink}>{title}</a> <Link className="post-subreddit" to="search" params={{sort: "hot", splat: subreddit}}>{subreddit}</Link></div>
           <div className="post-text" dangerouslySetInnerHTML={{__html: text}} />
-          <div className="post-footer">{nsfw} {date} - {score} - {numComments}</div>
+          <div className="post-footer">{nsfw} {date} - {score} - {numComments} - {author}</div>
         </div>
       </div>
     )
