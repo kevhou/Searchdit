@@ -7,4 +7,4 @@
 - ~~add guide~~
 - different color name in comments for author
 - SSL support
-- Reduce the number of returned posts with api call
+- ~~Reduce the number of returned posts with api call~~
