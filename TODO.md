@@ -5,6 +5,6 @@
 - ~~limit # of preview text `http://stackoverflow.com/questions/6983912/how-to-limit-inner-text-of-div-to-175-characters`~~
 - ~~add google analytics~~
 - ~~add guide~~
-- different color name in comments for author
+- ~~different color name in comments for author~~
 - SSL support
-- Reduce the number of returned posts with api call
+- ~~Reduce the number of returned posts with api call~~
