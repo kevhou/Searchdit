@@ -9,3 +9,4 @@
 - ~~Reduce the number of returned posts with api call~~
 - fix command-click on link
 - change `random` link to be like wolfram's random link (homepage)
+- add ads to make it more real (refer to yahoo for example)
